@@ -5,18 +5,19 @@ using UnityEngine;
 [System.Serializable]
 public class SaveData : ISerializationCallbackReceiver
 {
-	public int diff;
-	public int atk;
-	public string name;
+	//セーブデータが一度でも変更されたかどうか
+	public bool isChangeData;
+
+	public UserData userData;
 
 	/// <summary>
 	/// コンストラクタ。データを初期化した時の初期値になる
 	/// </summary>
 	public SaveData()
 	{
-		diff = 5;
-		atk = 5;
-		name = "名無しさん";
+		//ユーザーデータ初期化
+		userData = new UserData();
+		isChangeData = false;
 	}
 
 	public void OnAfterDeserialize()
@@ -25,5 +26,20 @@ public class SaveData : ISerializationCallbackReceiver
 
 	public void OnBeforeSerialize()
 	{
+	}
+}
+
+/// <summary>
+/// ユーザーから取得するデータ
+/// </summary>
+[System.Serializable]
+public class UserData
+{
+	public string playerName;
+	public int score;
+
+	public UserData()
+	{
+		playerName = "名無しさん";
 	}
 }

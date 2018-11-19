@@ -1,11 +1,13 @@
 ﻿using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class SaveManager : LightGive.SingletonMonoBehaviour<SaveManager>
 {
+	private const string SaveKey = "SaveKey";
+	private const string EmptySaveData = "";
+
 	/// <summary>
 	/// 一番最初以外は変更不可。保存できるスロット数。
 	/// スロット数を多くすると初期化などに時間がかかってしまう。ので触る時は注意。
@@ -48,53 +50,94 @@ public class SaveManager : LightGive.SingletonMonoBehaviour<SaveManager>
 		if (m_isAwakeLoad) { Load(); }
 	}
 
+
 	public void Save(int _saveSlot = 0)
 	{
-		string jsonText = JsonUtility.ToJson(m_saveData);
-		File.WriteAllText(GetSaveFilePath(_saveSlot), StringEncryptor.Encrypt(jsonText));
+		string jsonText = SaveDataToJson(m_saveData);
+		if (Application.platform == RuntimePlatform.WebGLPlayer)
+		{
+			//WebGLの時はPlayerPrefsを使用
+			PlayerPrefs.SetString(SaveKey + _saveSlot.ToString("0"), StringEncryptor.Encrypt(jsonText));
+		}
+		else
+		{
+			File.WriteAllText(GetSaveFilePath(_saveSlot), StringEncryptor.Encrypt(jsonText));
+		}
 
 		if (m_isCheckLog) { Debug.Log(_saveSlot.ToString("0") + "番のスロットに現在のデータを保存しました。"); }
 	}
 
+
 	public void Load(int _saveSlot = 0)
 	{
-		m_saveData = JsonUtility.FromJson<SaveData>(GetJson(_saveSlot));
-
+		m_saveData = JsonToSaveData(GetJson(_saveSlot));
 		if (m_isCheckLog) { Debug.Log(_saveSlot.ToString("0") + "番のスロットからデータをロードしました。"); }
 	}
 
-
 	public void Delete(int _saveSlot = 0)
 	{
-		string filePath = GetSaveFilePath(_saveSlot);
-		if (File.Exists(filePath))
+		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
-			File.Delete(filePath);
+			PlayerPrefs.DeleteKey(SaveKey + _saveSlot.ToString("0"));
 			if (m_isCheckLog) { Debug.Log("<color=red>" + _saveSlot.ToString("0") + "番のスロットのデータを削除しました。</color>"); }
 		}
 		else
 		{
-			if (m_isCheckLog) { Debug.Log(_saveSlot.ToString("0") + "番のスロットにはデータが存在しませんでした。"); }
-
+			string filePath = GetSaveFilePath(_saveSlot);
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+				if (m_isCheckLog) { Debug.Log("<color=red>" + _saveSlot.ToString("0") + "番のスロットのデータを削除しました。</color>"); }
+			}
+			else
+			{
+				if (m_isCheckLog) { Debug.Log(_saveSlot.ToString("0") + "番のスロットにはデータが存在しませんでした。"); }
+			}
 		}
 	}
 
 	public void DeleteAllSlot()
 	{
+		for (int i = 0; i < MaxSlotCount; i++)
+		{
+			Delete(i);
+		}
+	}
+
+	public SaveData JsonToSaveData(string _jsonData)
+	{
+		return JsonUtility.FromJson<SaveData>(_jsonData);
+	}
+
+	public string SaveDataToJson(SaveData _data)
+	{
+		return JsonUtility.ToJson(_data);
 	}
 
 	public string GetJson(int _saveSlot = 0)
 	{
-		string filePath = GetSaveFilePath(_saveSlot);
 		string jsonText = "";
-
-		if (File.Exists(filePath))
+		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
-			jsonText = StringEncryptor.Decrypt(File.ReadAllText(filePath));
+			//WebGLの場合はPlayerPrefsを使用する
+			jsonText = StringEncryptor.Decrypt(PlayerPrefs.GetString(SaveKey + _saveSlot.ToString("0"), EmptySaveData));
+			if (jsonText == EmptySaveData)
+			{
+				//初期化したデータを入れておく
+				jsonText = SaveDataToJson(new SaveData());
+			}
 		}
 		else
 		{
-			jsonText = JsonUtility.ToJson(new SaveData());
+			string filePath = GetSaveFilePath(_saveSlot);
+			if (File.Exists(filePath))
+			{
+				jsonText = StringEncryptor.Decrypt(File.ReadAllText(filePath));
+			}
+			else
+			{
+				jsonText = JsonUtility.ToJson(new SaveData());
+			}
 		}
 
 		return jsonText;

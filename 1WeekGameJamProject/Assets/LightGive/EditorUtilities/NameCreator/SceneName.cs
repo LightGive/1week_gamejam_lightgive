@@ -2,12 +2,18 @@ public class SceneName
 {
 
 	/// <summary>
-	/// return "SampleScene"
+	/// return "Title"
  	/// </summary>
-	public const string @SampleScene = "SampleScene";
+	public const string @Title = "Title";
 
 	/// <summary>
-	/// <para>0. "SampleScene"</para>
+	/// return "Main"
+ 	/// </summary>
+	public const string @Main = "Main";
+
+	/// <summary>
+	/// <para>0. "Title"</para>
+	/// <para>1. "Main"</para>
 	/// </summary>
-	public static readonly string[] names = new string[]{"SampleScene"};
+	public static readonly string[] names = new string[]{"Title","Main"};
 }

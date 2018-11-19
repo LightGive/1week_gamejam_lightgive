@@ -27,11 +27,6 @@ public class LayerName
 	public const string @UI = "UI";
 
 	/// <summary>
-	/// return "PostProcessing"
- 	/// </summary>
-	public const string @PostProcessing = "PostProcessing";
-
-	/// <summary>
 	/// <para>0. "Default"</para>
 	/// <para>1. "TransparentFX"</para>
 	/// <para>2. "Ignore Raycast"</para>
@@ -40,7 +35,7 @@ public class LayerName
 	/// <para>5. "UI"</para>
 	/// <para>6. ""</para>
 	/// <para>7. ""</para>
-	/// <para>8. "PostProcessing"</para>
+	/// <para>8. ""</para>
 	/// <para>9. ""</para>
 	/// <para>10. ""</para>
 	/// <para>11. ""</para>
@@ -65,5 +60,5 @@ public class LayerName
 	/// <para>30. ""</para>
 	/// <para>31. ""</para>
 	/// </summary>
-	public static readonly string[] names = new string[]{"Default","TransparentFX","Ignore Raycast","","Water","UI","","","PostProcessing","","","","","","","","","","","","","","","","","","","","","","",""};
+	public static readonly string[] names = new string[]{"Default","TransparentFX","Ignore Raycast","","Water","UI","","","","","","","","","","","","","","","","","","","","","","","","","",""};
 }

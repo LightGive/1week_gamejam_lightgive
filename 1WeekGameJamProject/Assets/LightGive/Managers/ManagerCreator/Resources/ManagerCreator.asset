@@ -15,3 +15,5 @@ MonoBehaviour:
   m_createManagers:
   - {fileID: 1808183684314374, guid: ce093e3a564814f70b5df846024b722f, type: 2}
   - {fileID: 1014063438133584, guid: 6c809c8c07559404f91943282277eee2, type: 2}
+  - {fileID: 1453243915436970, guid: 0994ac00a8ce74f47bde0040a6e6ac46, type: 2}
+  - {fileID: 1688116844107536, guid: c2f6c95f58416cb43957df5d764c6cbd, type: 2}
