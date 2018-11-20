@@ -52,10 +52,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDontDestroy: 0
-  m_transitionType: 17
-  m_duration: 1
+  m_defaultFlashDuration: 0
+  m_defaultFlashWhiteDuration: 0.05
+  m_defaultFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  m_defaultEffectType: 17
+  m_defaultTransDuration: 0.5
   m_ruleTex: {fileID: 2800000, guid: 51a5ef3cd8c844bcbb9aab4edde3ae7c, type: 3}
-  m_texColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
+  m_defaultEffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_animCurve:
     serializedVersion: 2
     m_Curve:

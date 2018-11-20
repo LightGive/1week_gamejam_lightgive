@@ -53,6 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDontDestroy: 1
   audioClipListSe:
+  - {fileID: 8300000, guid: a9ef57b4e5ae34743b6cf1d95c2a7791, type: 3}
+  - {fileID: 8300000, guid: 9a86d06ce1a354d858f381dd4358acba, type: 3}
   - {fileID: 8300000, guid: 7dbff6339e0e94eaaa3f45ccebbe8f66, type: 3}
   audioClipListBgm:
   - {fileID: 8300000, guid: 6a85a9115197f4042a26228d87e54742, type: 3}

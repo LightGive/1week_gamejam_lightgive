@@ -52,16 +52,16 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 			return;
 		m_isChangeScreen = true;
 
-		TransitionManager.Instance.StartTransitonEffect(0.5f, () =>
-		{
-			m_preScreenType = m_nowScreenType;
-			m_nowScreenType = _screenType;
-			for (int i = 0; i < m_screens.Length; i++)
-			{
-				m_screens[i].SetActive(i == (int)_screenType);
-			}
-			m_isChangeScreen = false;
-		});
+		TransitionManager.Instance.StartTransitonEffect(0.5f, TransitionManager.EffectType.Custom, Color.black, () =>
+		  {
+			  m_preScreenType = m_nowScreenType;
+			  m_nowScreenType = _screenType;
+			  for (int i = 0; i < m_screens.Length; i++)
+			  {
+				  m_screens[i].SetActive(i == (int)_screenType);
+			  }
+			  m_isChangeScreen = false;
+		  });
 	}
 
 	public enum ScreenType

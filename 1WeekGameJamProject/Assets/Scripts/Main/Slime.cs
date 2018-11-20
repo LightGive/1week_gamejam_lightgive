@@ -9,14 +9,18 @@ public class Slime : MonoBehaviour
 	[SerializeField]
 	private MainArrow m_mainArrow;
 	[SerializeField]
+	private AnimationCurve m_animCurve;
+	[SerializeField]
 	private RangeFloat m_rangeDistance;
 	[SerializeField]
 	private RangeFloat m_rangeForcePower;
 	[SerializeField]
 	private RangeFloat m_rangeSoundMag;
+	[SerializeField]
+	private float m_minHitVelocity;
 
 	[SerializeField]
-	private int m_nowNum;
+	private PlayerStatus m_status;
 
 	private JellySprite m_jellySprite;
 	private Vector2 m_beginTouchPos;
@@ -30,16 +34,34 @@ public class Slime : MonoBehaviour
 	{
 		get { return m_jellySprite.CentralPoint.GameObject; }
 	}
+	public int level
+	{
+		get { return m_status.level; }
+	}
+	public PlayerStatus playerStatus { get { return m_status; } }
 
 	void Start()
 	{
 		m_jellySprite = this.gameObject.GetComponent<JellySprite>();
-		Calc(Operator.Add, 0);
+		//Calc(Operator.Add, 0);
 	}
 
 	protected virtual void Update()
 	{
 		CheckTouch();
+	}
+
+	public void AddExp(int _addExp = 0)
+	{
+		SceneMain.Instance.uIController.sliderExp.AddExp(_addExp);
+	}
+
+	public void LevelUp()
+	{
+		m_status.level++;
+		m_status.maxExp = m_status.level * 10;
+		m_status.exp = 0;
+		SceneMain.Instance.uIController.textLevel.text = m_status.level.ToString("0");
 	}
 
 	void CheckTouch()
@@ -79,42 +101,31 @@ public class Slime : MonoBehaviour
 			if (m_mainArrow.isActive)
 			{
 				var vec = (m_beginTouchPos - nowTouchPos).normalized;
-				m_jellySprite.AddForce(vec * Mathf.Lerp(m_rangeForcePower.MinValue, m_rangeForcePower.MaxValue, m_mainArrow.lerp));
+				m_jellySprite.AddForce(vec * Mathf.Lerp(m_rangeForcePower.MinValue, m_rangeForcePower.MaxValue, m_mainArrow.lerp) * m_status.moveSpeed);
 				m_mainArrow.SetActive(false);
 			}
 		}
 	}
 
-	void Calc(Operator _ope, int _num)
+	void OnJellyCollisionEnter2D(JellySprite.JellyCollision2D _col)
 	{
-		switch (_ope)
+		switch (_col.Collision2D.gameObject.tag)
 		{
-			case Operator.Add:
-				m_nowNum += _num;
-				break;
-			case Operator.Sub:
-				m_nowNum -= _num;
-				break;
-			case Operator.Multi:
-				m_nowNum *= _num;
-				break;
-			case Operator.Div:
-				if (_num == 0)
+			case TagName.Enemy:
+				var vec = centerObj.GetComponent<Rigidbody2D>().velocity;
+				if (vec.magnitude < m_minHitVelocity)
 				{
-					Debug.Log("0除算=>NaN");
+					return;
 				}
+
+				var enemy = _col.Collision2D.gameObject.GetComponent<Enemy>();
+				enemy.Hit(m_status.atk);
 				break;
 		}
 
-		m_numSPrite.SetNumber(Operator.Add, m_nowNum);
-	}
-
-	void OnJellyCollisionEnter2D(JellySprite.JellyCollision2D _col)
-	{
 		if (Time.time - m_soundPlayTime < 0.2f)
 			return;
 		var mag = Mathf.Abs(centerObj.GetComponent<Rigidbody2D>().velocity.y);
-
 		if (mag < m_rangeSoundMag.MinValue)
 			return;
 
@@ -127,21 +138,13 @@ public class Slime : MonoBehaviour
 
 	}
 
-	void OnJellyTriggerEnter2D(JellySprite.JellyCollider2D _col)
-	{
-		if (_col.Collider2D.tag != TagName.Enemy)
-			return;
-
-		var enemy = _col.Collider2D.gameObject.GetComponent<Enemy>();
-		enemy.Hit();
-		Calc(enemy.ope, enemy.num);
-	}
-
+	[System.Serializable]
 	public class PlayerStatus
 	{
+		public int level;
+		public int atk;
+		public int exp;
+		public int maxExp;
 		public float moveSpeed;
-		public int hitPoint;
-
-
 	}
 }
