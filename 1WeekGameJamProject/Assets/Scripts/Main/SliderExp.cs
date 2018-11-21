@@ -2,21 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SliderExp : MonoBehaviour
 {
 	[SerializeField]
 	private Slider m_slider;
 	[SerializeField]
+	private TextMeshProUGUI m_textLevel;
+	[SerializeField]
+	private TextMeshProUGUI m_textExp;
+	[SerializeField]
 	private float m_addTime = 1.0f;
 	[SerializeField]
 	private AnimationCurve m_animCurve;
 
 	private bool m_isAddProduction;
+	private int m_displayLevel;
 	private int m_addExp;
 	private float m_timeCount;
 	private Queue<AddInfo> m_addExpQueue = new Queue<AddInfo>();
 	private AddInfo m_addInfo;
+
+
+	private void Start()
+	{
+		m_displayLevel = SceneMain.Instance.slime.playerStatus.level;
+		m_slider.value = Mathf.Clamp01((float)SceneMain.Instance.slime.playerStatus.exp / SceneMain.Instance.slime.playerStatus.maxExp);
+		m_textExp.text = SceneMain.Instance.slime.playerStatus.exp.ToString("0") + " / " + SceneMain.Instance.slime.playerStatus.maxExp.ToString("0");
+	}
 
 	private void Update()
 	{
@@ -24,8 +38,25 @@ public class SliderExp : MonoBehaviour
 			return;
 
 		m_timeCount += Time.deltaTime;
-		var lerp = Mathf.Clamp01(m_timeCount / m_addTime);
-		m_slider.value = m_animCurve.Evaluate(lerp);
+		var lerp = m_animCurve.Evaluate(Mathf.Clamp01(m_timeCount / m_addTime));
+		var nowVal = Mathf.Lerp(m_addInfo.fromExp, m_addInfo.toExp, lerp);
+		var sliderVal = nowVal / m_addInfo.maxExp;
+		m_textExp.text = (m_addInfo.maxExp * sliderVal).ToString("0") + " / " + m_addInfo.maxExp.ToString("0");
+		m_slider.value = sliderVal;
+
+		if (m_timeCount > m_addTime)
+		{
+			Debug.Log("from" + m_addInfo.fromExp + "   to" + m_addInfo.toExp + "   max" + m_addInfo.maxExp);
+
+			if (m_addInfo.maxExp == m_addInfo.toExp)
+			{
+				m_displayLevel++;
+				m_textLevel.text = m_displayLevel.ToString("0");
+				m_slider.value = 0.0f;
+			}
+			m_isAddProduction = false;
+			CheckQueue();
+		}
 	}
 
 	public void AddExp(int _addExp)
@@ -41,7 +72,8 @@ public class SliderExp : MonoBehaviour
 				realAdd = maxExp - currentExp;
 			}
 
-			m_addExpQueue.Enqueue(new AddInfo(currentExp, (currentExp + realAdd)));
+			m_addExpQueue.Enqueue(new AddInfo(currentExp, (currentExp + realAdd), maxExp));
+			SceneMain.Instance.slime.playerStatus.exp += realAdd;
 
 			//経験値がMaxかどうかの判定
 			if ((currentExp + realAdd) >= maxExp)
@@ -55,8 +87,11 @@ public class SliderExp : MonoBehaviour
 		CheckQueue();
 	}
 
+
 	public void CheckQueue()
 	{
+		if (m_isAddProduction)
+			return;
 		if (m_addExpQueue.Count <= 0)
 			return;
 
@@ -69,11 +104,13 @@ public class SliderExp : MonoBehaviour
 	{
 		public int fromExp;
 		public int toExp;
+		public int maxExp;
 
-		public AddInfo(int _fromExp, int _toExp)
+		public AddInfo(int _fromExp, int _toExp, int _maxExp)
 		{
 			fromExp = _fromExp;
 			toExp = _toExp;
+			maxExp = _maxExp;
 		}
 	}
 

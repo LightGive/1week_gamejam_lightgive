@@ -6,6 +6,8 @@ using LightGive;
 public class Enemy : MonoBehaviour
 {
 	[SerializeField]
+	private Animator m_anim;
+	[SerializeField]
 	protected DisplayNumberSprite m_numberSpriteDisplay;
 	[SerializeField]
 	private SpriteParamChanger m_sprite;
@@ -19,6 +21,7 @@ public class Enemy : MonoBehaviour
 
 	private void Start()
 	{
+		m_status.hp = m_status.maxHp;
 		m_numberSpriteDisplay.SetNumber(m_status.level);
 	}
 
@@ -31,6 +34,8 @@ public class Enemy : MonoBehaviour
 		m_hitPointBar.SetBarLerp((float)m_status.hp / m_status.maxHp);
 		if (m_status.hp <= 0)
 		{
+			m_status.hp = m_status.maxHp;
+
 			SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.EnemyDead);
 			transform.position = SceneMain.Instance.randomPos;
 			SceneMain.Instance.slime.AddExp(m_status.exp);

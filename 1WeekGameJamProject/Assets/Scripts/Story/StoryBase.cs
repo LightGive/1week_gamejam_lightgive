@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StoryBase : MonoBehaviour
 {
-	[SerializeField, Multiline]
+	[SerializeField]
 	private DisplayInfo[] m_displayTextInfos;
 
 	public DisplayInfo[] displayTextInfos { get { return m_displayTextInfos; } }
@@ -13,6 +13,7 @@ public class StoryBase : MonoBehaviour
 	public class DisplayInfo
 	{
 		public string nameText;
+		[Multiline]
 		public string displayText;
 	}
 }

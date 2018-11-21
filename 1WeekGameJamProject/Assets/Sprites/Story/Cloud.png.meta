@@ -1,13 +1,11 @@
 fileFormatVersion: 2
-guid: 17bfd06e653c14f6da9c9c962f8a62df
+guid: ecb348284aa5141ea8b42f66540356ec
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Monster1_0
-    21300002: Monster1_1
-    21300004: Monster1_2
-    21300006: Monster1_3
-    21300008: Monster1_4
-    21300010: Monster1_5
+    21300000: Cloud_0
+    21300002: Cloud_1
+    21300004: Cloud_2
+    21300006: Cloud_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -69,7 +67,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -80,7 +78,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -91,7 +89,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,7 +100,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,7 +111,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster1_0
+      name: Cloud_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 32
-        height: 32
+        x: 17
+        y: 80
+        width: 16
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,19 +135,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 00c1689040c6a4dfe86fb6e5c673519a
+      spriteID: af8c4e506e0654d9aad9fd18c0dd79ff
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster1_1
+      name: Cloud_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
+        x: 6
+        y: 56
+        width: 40
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,19 +155,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2e0a9d128c244e48a01faf7bf28d4ea
+      spriteID: ad570702f87874c99a4246c9f06f9b4b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster1_2
+      name: Cloud_2
       rect:
         serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
+        x: 1
+        y: 30
+        width: 53
+        height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,19 +175,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b3a0fc3dcc873435fa4357cc9594d6b4
+      spriteID: 8493a5aa1744240928923daccb87d05a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster1_3
+      name: Cloud_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 2
+        y: 3
+        width: 53
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,47 +195,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a20df8f60e0564488ae48d1137c1971a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Monster1_4
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 56515e8ea98e749338275e6f60a8db9c
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Monster1_5
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 23f6dd17e805440968a5a9b83ffda845
+      spriteID: 137b5799e19dd4b24b3761e50aee01e3
       vertices: []
       indices: 
       edges: []
@@ -245,7 +203,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5261708e729d54f41920fbb5d3058728
+    spriteID: 01a6fc84fb52347af9f30e4d9feedff2
     vertices: []
     indices: 
     edges: []

@@ -59,9 +59,9 @@ public class Slime : MonoBehaviour
 	public void LevelUp()
 	{
 		m_status.level++;
-		m_status.maxExp = m_status.level * 10;
+		//m_status.maxExp = m_status.level * 10;
 		m_status.exp = 0;
-		SceneMain.Instance.uIController.textLevel.text = m_status.level.ToString("0");
+		//SceneMain.Instance.uIController.textLevel.text = m_status.level.ToString("0");
 	}
 
 	void CheckTouch()
