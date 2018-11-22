@@ -41,9 +41,12 @@ public class UserData
 {
 	public string playerName;
 	public int totalKill;
+	public int clearCount;
 
 	public UserData()
 	{
+		totalKill = 0;
+		clearCount = 0;
 		playerName = "名無しさん";
 	}
 }
@@ -71,6 +74,7 @@ public class RankingData
 	public string rankingName;
 	public int arrivalStage;
 	public int slimeLevel;
+	public int score = 0;
 	public SlimeType slimeType;
 
 	public RankingData()
@@ -79,5 +83,6 @@ public class RankingData
 		arrivalStage = 1;
 		slimeLevel = 10;
 		slimeType = SlimeType.Normal;
+		score = 0;
 	}
 }

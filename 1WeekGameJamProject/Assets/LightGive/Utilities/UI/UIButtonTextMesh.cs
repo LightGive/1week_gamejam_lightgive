@@ -15,6 +15,8 @@ public class UIButtonTextMesh : MonoBehaviour, IPointerEnterHandler, IPointerDow
 	[SerializeField]
 	private Button m_mainButton;
 	[SerializeField]
+	private Vector2 m_highlightTextOffsetPos;
+	[SerializeField]
 	private Vector2 m_pressTextOffsetPos;
 
 	private bool m_isPointerDown = false;
@@ -77,6 +79,10 @@ public class UIButtonTextMesh : MonoBehaviour, IPointerEnterHandler, IPointerDow
 				{
 					m_textButton.rectTransform.anchoredPosition = m_defaultTextAnchorPos + m_pressTextOffsetPos;
 				}
+				else
+				{
+					m_textButton.rectTransform.anchoredPosition = m_defaultTextAnchorPos + m_highlightTextOffsetPos;
+				}
 				break;
 		}
 	}
@@ -92,6 +98,11 @@ public class UIButtonTextMesh : MonoBehaviour, IPointerEnterHandler, IPointerDow
 				if (m_isPointerDown)
 				{
 					m_textButton.rectTransform.anchoredPosition = m_defaultTextAnchorPos;
+				}
+				else
+				{
+					m_textButton.rectTransform.anchoredPosition = m_defaultTextAnchorPos;
+
 				}
 				break;
 		}

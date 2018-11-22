@@ -52,6 +52,9 @@ public class Slime : MonoBehaviour
 
 	protected virtual void Update()
 	{
+		if (SceneMain.Instance.isGameOver || !SceneMain.Instance.isGameStart)
+			return;
+
 		CheckTouch();
 		CheckEyeTarget();
 	}

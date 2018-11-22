@@ -25,18 +25,22 @@ public class LeaderboardManager : LightGive.SingletonMonoBehaviour<LeaderboardMa
 	/// </summary>
 	/// <returns>The save data.</returns>
 	/// <param name="_jsonData">Json data.</param>
-	public IEnumerator SendSaveData(string _jsonData)
+	public IEnumerator SendSaveData(string _jsonData, UnityAction _callback = null)
 	{
 		//スコアを既に送っているかの判定
 		if (PlayerPrefs.HasKey(SaveKeyObjectId))
 		{
 			//既に送っているのでレコード編集
 			yield return PutSaveData(_jsonData, PlayerPrefs.GetString(SaveKeyObjectId));
+			if (_callback != null)
+				_callback.Invoke();
 		}
 		else
 		{
 			//まだ送ってないので新規レコード登録
 			yield return SendSaveDataUncheck(_jsonData);
+			if (_callback != null)
+				_callback.Invoke();
 		}
 	}
 
@@ -99,7 +103,8 @@ public class LeaderboardManager : LightGive.SingletonMonoBehaviour<LeaderboardMa
 		yield return paramSet.objectId;
 	}
 
-	public IEnumerator GetRankingData(UnityAction<JsonDataList> callback)
+
+	public IEnumerator GetJsonData(UnityAction<JsonDataList> callback)
 	{
 		NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet();
 		paramSet.Limit = int.MaxValue;

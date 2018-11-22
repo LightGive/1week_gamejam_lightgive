@@ -27,6 +27,9 @@ public class Enemy : MonoBehaviour
 
 	public void Hit(int _damage)
 	{
+		if (SceneMain.Instance.isGameOver)
+			return;
+
 		if (m_isInvisible)
 			return;
 

@@ -5,9 +5,12 @@
 	public const string BGM_Main2 = "Main2";
 	public const string BGM_Story1 = "Story1";
 	public const string BGM_Story2 = "Story2";
+	public const string BGM_Title = "Title";
 	
+	public const string SE_Cursor = "Cursor";
 	public const string SE_EnemyDamage = "EnemyDamage";
 	public const string SE_EnemyDead = "EnemyDead";
+	public const string SE_Enter = "Enter";
 	public const string SE_GameStartJingle = "GameStartJingle";
 	public const string SE_Puyo = "Puyo";
 	public const string SE_TextDisplay = "TextDisplay";
@@ -22,13 +25,16 @@ public enum SoundNameBGM
 	Main2 = 2,
 	Story1 = 3,
 	Story2 = 4,
+	Title = 6,
 }
 	
 public enum SoundNameSE
 {
 	None,
+	Cursor = 7,
 	EnemyDamage = 2,
 	EnemyDead = 3,
+	Enter = 8,
 	GameStartJingle = 5,
 	Puyo = 1,
 	TextDisplay = 4,

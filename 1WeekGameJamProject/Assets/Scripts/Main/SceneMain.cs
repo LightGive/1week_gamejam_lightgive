@@ -11,9 +11,12 @@ public class SceneMain : SingletonMonoBehaviour<SceneMain>
 	[SerializeField]
 	private UIController m_uiController;
 	[SerializeField]
+	private GameOverUI m_gameOverUI;
+	[SerializeField]
 	private Slime m_slime;
 	[SerializeField]
 	private float m_damageTime = 10.0f;
+
 
 	private bool m_isGameStart = false;
 	private bool m_isGameOver = false;
@@ -28,14 +31,11 @@ public class SceneMain : SingletonMonoBehaviour<SceneMain>
 	{
 		get { return new Vector3(Random.Range(-140, 140), Random.Range(-40, 40)); }
 	}
-	public UIController uIController
-	{
-		get { return m_uiController; }
-	}
-	public Slime slime
-	{
-		get { return m_slime; }
-	}
+
+	public bool isGameOver { get { return m_isGameOver; } }
+	public bool isGameStart { get { return m_isGameStart; } }
+	public UIController uIController { get { return m_uiController; } }
+	public Slime slime { get { return m_slime; } }
 
 
 	protected override void Awake()
@@ -43,6 +43,11 @@ public class SceneMain : SingletonMonoBehaviour<SceneMain>
 		isDontDestroy = false;
 		base.Awake();
 
+	}
+
+	private void Start()
+	{
+		SimpleSoundManager.Instance.PlayBGM(SoundNameBGM.Main2);
 	}
 
 	private void Update()
@@ -97,6 +102,9 @@ public class SceneMain : SingletonMonoBehaviour<SceneMain>
 
 	public void GameOver()
 	{
+		SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.Thunder);
+		SimpleSoundManager.Instance.StopBGM();
+		m_gameOverUI.gameObject.SetActive(true);
 		m_isGameOver = true;
 	}
 
@@ -106,5 +114,4 @@ public class SceneMain : SingletonMonoBehaviour<SceneMain>
 		m_isGameOver = false;
 		m_isGameStart = true;
 	}
-
 }

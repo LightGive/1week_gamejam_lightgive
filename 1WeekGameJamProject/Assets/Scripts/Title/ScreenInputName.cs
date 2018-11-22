@@ -12,7 +12,6 @@ public class ScreenInputName : MonoBehaviour
 	{
 		var realName = m_inputText.text.Replace('\n', ' ');
 
-		//ここで重複しているかの判定
 		if (realName == "")
 		{
 			return;
@@ -22,5 +21,10 @@ public class ScreenInputName : MonoBehaviour
 		SaveManager.Instance.saveData.isChangeData = true;
 		SaveManager.Instance.Save();
 		TransitionManager.Instance.LoadScene(SceneName.Main);
+	}
+
+	public void OnInputTextChange()
+	{
+		SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.Cursor);
 	}
 }

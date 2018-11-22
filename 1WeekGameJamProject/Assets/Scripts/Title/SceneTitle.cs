@@ -23,6 +23,11 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 		m_buttonContinue.SetActive(SaveManager.Instance.saveData.isChangeData);
 	}
 
+	private void Start()
+	{
+		SimpleSoundManager.Instance.PlayBGM(SoundNameBGM.Title);
+	}
+
 	/// <summary>
 	/// 戻るボタンを押した時
 	/// </summary>
@@ -31,16 +36,21 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 		ChangeScreen(m_preScreenType);
 	}
 
+	/// <summary>
+	/// はじめるのボタンを押した
+	/// </summary>
 	public void OnButtonDownFirstStart()
 	{
 		ChangeScreen(ScreenType.InputName);
 	}
 
+	/// <summary>
+	/// つづきからのボタンを押した
+	/// </summary>
 	public void OnButtonDownContinue()
 	{
 		TransitionManager.Instance.LoadScene(SceneName.Main);
 	}
-
 
 	/// <summary>
 	/// タイトルシーン内でシーン変更
@@ -50,6 +60,7 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 	{
 		if (m_isChangeScreen)
 			return;
+
 		m_isChangeScreen = true;
 
 		TransitionManager.Instance.StartTransitonEffect(0.5f, TransitionManager.EffectType.Custom, Color.black, () =>

@@ -53,7 +53,7 @@ public class SaveManager : LightGive.SingletonMonoBehaviour<SaveManager>
 
 	public void Save(int _saveSlot = 0)
 	{
-		string jsonText = SaveDataToJson(m_saveData);
+		string jsonText = JsonUtility.ToJson(m_saveData);
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
 			//WebGLの時はPlayerPrefsを使用
@@ -70,7 +70,7 @@ public class SaveManager : LightGive.SingletonMonoBehaviour<SaveManager>
 
 	public void Load(int _saveSlot = 0)
 	{
-		m_saveData = JsonToSaveData(GetJson(_saveSlot));
+		m_saveData = JsonUtility.FromJson<SaveData>(GetJson(_saveSlot));
 		if (m_isCheckLog) { Debug.Log(_saveSlot.ToString("0") + "番のスロットからデータをロードしました。"); }
 	}
 
@@ -104,14 +104,14 @@ public class SaveManager : LightGive.SingletonMonoBehaviour<SaveManager>
 		}
 	}
 
-	public SaveData JsonToSaveData(string _jsonData)
+	public RankingData JsonToSaveData(string _jsonData)
 	{
-		return JsonUtility.FromJson<SaveData>(_jsonData);
+		return JsonUtility.FromJson<RankingData>(StringEncryptor.Decrypt(_jsonData));
 	}
 
-	public string SaveDataToJson(SaveData _data)
+	public string SaveDataToJson(RankingData _data)
 	{
-		return JsonUtility.ToJson(_data);
+		return StringEncryptor.Encrypt(JsonUtility.ToJson(_data));
 	}
 
 	public string GetJson(int _saveSlot = 0)
@@ -124,7 +124,7 @@ public class SaveManager : LightGive.SingletonMonoBehaviour<SaveManager>
 			if (jsonText == EmptySaveData)
 			{
 				//初期化したデータを入れておく
-				jsonText = SaveDataToJson(new SaveData());
+				jsonText = JsonUtility.ToJson(new SaveData());
 			}
 		}
 		else
