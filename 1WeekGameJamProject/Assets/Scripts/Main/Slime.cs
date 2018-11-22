@@ -129,8 +129,10 @@ public class Slime : MonoBehaviour
 		if (mag < m_rangeSoundMag.MinValue)
 			return;
 
-
+		Debug.Log("NoClamp" + mag);
 		mag = Mathf.Clamp(mag, m_rangeSoundMag.MinValue, m_rangeSoundMag.MaxValue);
+		Debug.Log("Clamp" + mag);
+
 		var lerp = (mag - m_rangeSoundMag.MinValue) / m_rangeSoundMag.MinValue;
 		var vol = Mathf.Lerp(m_rangeSoundMag.MinValue, m_rangeSoundMag.MaxValue, lerp);
 		SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.Puyo, vol);

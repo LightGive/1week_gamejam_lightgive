@@ -2174,7 +2174,7 @@ MonoBehaviour:
     m_maxValue: 10000
   m_rangeSoundMag:
     m_minValue: 0
-    m_maxValue: 10
+    m_maxValue: 50
   m_minHitVelocity: 50
   m_status:
     level: 10
