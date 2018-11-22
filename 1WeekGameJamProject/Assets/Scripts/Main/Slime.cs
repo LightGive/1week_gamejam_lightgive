@@ -18,7 +18,6 @@ public class Slime : MonoBehaviour
 	private RangeFloat m_rangeSoundMag;
 	[SerializeField]
 	private float m_minHitVelocity;
-
 	[SerializeField]
 	private PlayerStatus m_status;
 
@@ -59,9 +58,7 @@ public class Slime : MonoBehaviour
 	public void LevelUp()
 	{
 		m_status.level++;
-		//m_status.maxExp = m_status.level * 10;
 		m_status.exp = 0;
-		//SceneMain.Instance.uIController.textLevel.text = m_status.level.ToString("0");
 	}
 
 	void CheckTouch()
@@ -101,42 +98,52 @@ public class Slime : MonoBehaviour
 			if (m_mainArrow.isActive)
 			{
 				var vec = (m_beginTouchPos - nowTouchPos).normalized;
-				m_jellySprite.AddForce(vec * Mathf.Lerp(m_rangeForcePower.MinValue, m_rangeForcePower.MaxValue, m_mainArrow.lerp) * m_status.moveSpeed);
+				m_jellySprite.ChangeVelocity(vec * Mathf.Lerp(m_rangeForcePower.MinValue, m_rangeForcePower.MaxValue, m_mainArrow.lerp) * m_status.moveSpeed);
 				m_mainArrow.SetActive(false);
 			}
 		}
 	}
 
+	/// <summary>
+	/// 当たった時
+	/// </summary>
+	/// <param name="_col">Col.</param>
 	void OnJellyCollisionEnter2D(JellySprite.JellyCollision2D _col)
 	{
 		switch (_col.Collision2D.gameObject.tag)
 		{
 			case TagName.Enemy:
+
 				var vec = centerObj.GetComponent<Rigidbody2D>().velocity;
+
 				if (vec.magnitude < m_minHitVelocity)
-				{
 					return;
-				}
 
 				var enemy = _col.Collision2D.gameObject.GetComponent<Enemy>();
 				enemy.Hit(m_status.atk);
 				break;
+
+			case TagName.StageObject:
+
+				//Do not ring twice in a row
+				if (Time.time - m_soundPlayTime < 0.2f)
+					return;
+
+				//Calc hit Speed
+				var mag = Mathf.Abs(centerObj.GetComponent<Rigidbody2D>().velocity.y);
+				if (mag < m_rangeSoundMag.MinValue)
+					return;
+
+				//Calc sound volume
+				mag = Mathf.Clamp(mag, m_rangeSoundMag.MinValue, m_rangeSoundMag.MaxValue);
+				var vol = (mag - m_rangeSoundMag.MinValue) / (m_rangeSoundMag.MaxValue - m_rangeSoundMag.MinValue);
+
+				//Play SE
+				SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.Puyo, vol);
+				m_soundPlayTime = Time.time;
+				break;
 		}
 
-		if (Time.time - m_soundPlayTime < 0.2f)
-			return;
-		var mag = Mathf.Abs(centerObj.GetComponent<Rigidbody2D>().velocity.y);
-		if (mag < m_rangeSoundMag.MinValue)
-			return;
-
-		Debug.Log("NoClamp" + mag);
-		mag = Mathf.Clamp(mag, m_rangeSoundMag.MinValue, m_rangeSoundMag.MaxValue);
-		Debug.Log("Clamp" + mag);
-
-		var lerp = (mag - m_rangeSoundMag.MinValue) / m_rangeSoundMag.MinValue;
-		var vol = Mathf.Lerp(m_rangeSoundMag.MinValue, m_rangeSoundMag.MaxValue, lerp);
-		SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.Puyo, vol);
-		m_soundPlayTime = Time.time;
 
 	}
 

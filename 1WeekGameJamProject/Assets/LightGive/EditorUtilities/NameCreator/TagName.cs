@@ -42,9 +42,9 @@ public class TagName
 	public const string @Enemy = "Enemy";
 
 	/// <summary>
-	/// return "Ground"
+	/// return "StageObject"
  	/// </summary>
-	public const string @Ground = "Ground";
+	public const string @StageObject = "StageObject";
 
 	/// <summary>
 	/// <para>0. "Untagged"</para>
@@ -55,7 +55,7 @@ public class TagName
 	/// <para>5. "Player"</para>
 	/// <para>6. "GameController"</para>
 	/// <para>7. "Enemy"</para>
-	/// <para>8. "Ground"</para>
+	/// <para>8. "StageObject"</para>
 	/// </summary>
-	public static readonly string[] names = new string[]{"Untagged","Respawn","Finish","EditorOnly","MainCamera","Player","GameController","Enemy","Ground"};
+	public static readonly string[] names = new string[]{"Untagged","Respawn","Finish","EditorOnly","MainCamera","Player","GameController","Enemy","StageObject"};
 }

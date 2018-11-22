@@ -2170,11 +2170,11 @@ MonoBehaviour:
     m_minValue: 20
     m_maxValue: 200
   m_rangeForcePower:
-    m_minValue: 1000
-    m_maxValue: 10000
+    m_minValue: 1
+    m_maxValue: 10
   m_rangeSoundMag:
-    m_minValue: 0
-    m_maxValue: 50
+    m_minValue: 30
+    m_maxValue: 200
   m_minHitVelocity: 50
   m_status:
     level: 10
@@ -2194,7 +2194,7 @@ GameObject:
   - component: {fileID: 688401140}
   m_Layer: 0
   m_Name: Top
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5489,7 +5489,7 @@ GameObject:
   - component: {fileID: 1660903151}
   m_Layer: 0
   m_Name: Left
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5685,7 +5685,7 @@ GameObject:
   - component: {fileID: 1782318763}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6475,7 +6475,7 @@ GameObject:
   - component: {fileID: 1937468094}
   m_Layer: 0
   m_Name: Side
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
