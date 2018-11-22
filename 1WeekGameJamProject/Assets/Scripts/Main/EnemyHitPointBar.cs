@@ -14,5 +14,4 @@ public class EnemyHitPointBar : MonoBehaviour
 		var width = m_spRendererWindow.size.x;
 		m_spRendererBar.transform.localScale = new Vector3((width - 2) * _lerp, 1.0f);
 	}
-
 }

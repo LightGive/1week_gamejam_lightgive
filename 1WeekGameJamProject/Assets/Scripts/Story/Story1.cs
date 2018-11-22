@@ -14,6 +14,10 @@ public class Story1 : StoryBase
 	[SerializeField]
 	private float m_createLeftEdge;
 
+	private void Start()
+	{
+		SimpleSoundManager.Instance.PlayBGM(SoundNameBGM.Story1);
+	}
 
 	void Update()
 	{
@@ -30,6 +34,11 @@ public class Story1 : StoryBase
 		}
 	}
 
+
+	public void OnAppearDevil()
+	{
+		SimpleSoundManager.Instance.StopBGM();
+	}
 
 	[System.Serializable]
 	public class CloudInfo

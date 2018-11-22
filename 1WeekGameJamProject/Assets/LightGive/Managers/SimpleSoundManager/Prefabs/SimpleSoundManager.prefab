@@ -55,9 +55,16 @@ MonoBehaviour:
   audioClipListSe:
   - {fileID: 8300000, guid: a9ef57b4e5ae34743b6cf1d95c2a7791, type: 3}
   - {fileID: 8300000, guid: 9a86d06ce1a354d858f381dd4358acba, type: 3}
+  - {fileID: 8300000, guid: 27558b7ea5d184bacba473afb2007642, type: 3}
   - {fileID: 8300000, guid: 7dbff6339e0e94eaaa3f45ccebbe8f66, type: 3}
+  - {fileID: 8300000, guid: 7f1ebd6b0c75f4ccfbdf97d555e692c5, type: 3}
+  - {fileID: 8300000, guid: 99f6ce745e3cb4d23b73799df12b17c4, type: 3}
   audioClipListBgm:
+  - {fileID: 8300000, guid: b35238ab4447a403c8b4b5d2c16eea04, type: 3}
   - {fileID: 8300000, guid: 6a85a9115197f4042a26228d87e54742, type: 3}
+  - {fileID: 8300000, guid: 59c83006ea2d5436586a04feaab2c140, type: 3}
+  - {fileID: 8300000, guid: 5f29fc9e389974488bd2fb3228fcb769, type: 3}
+  - {fileID: 8300000, guid: f19ab73e0edd74743b6d0b865e203735, type: 3}
   m_soundEffectPlayers: []
   m_mainBackgroundPlayer: {fileID: 0}
   m_subBackgroundPlayer: {fileID: 0}

@@ -8,6 +8,8 @@ public class SaveData : ISerializationCallbackReceiver
 	//セーブデータが一度でも変更されたかどうか
 	public bool isChangeData;
 
+	public SettingData settingData;
+	public RankingData rankingData;
 	public UserData userData;
 
 	/// <summary>
@@ -17,6 +19,8 @@ public class SaveData : ISerializationCallbackReceiver
 	{
 		//ユーザーデータ初期化
 		userData = new UserData();
+		settingData = new SettingData();
+		rankingData = new RankingData();
 		isChangeData = false;
 	}
 
@@ -30,16 +34,50 @@ public class SaveData : ISerializationCallbackReceiver
 }
 
 /// <summary>
-/// ユーザーから取得するデータ
+/// ユーザーデータ
 /// </summary>
 [System.Serializable]
 public class UserData
 {
 	public string playerName;
-	public int score;
+	public int totalKill;
 
 	public UserData()
 	{
 		playerName = "名無しさん";
+	}
+}
+
+/// <summary>
+/// 設定のデータ
+/// </summary>
+[System.Serializable]
+public class SettingData
+{
+	public SettingVelocityGuide settingVelocityGuide;
+
+	public SettingData()
+	{
+		settingVelocityGuide = SettingVelocityGuide.Arrow;
+	}
+}
+
+/// <summary>
+/// ランキングのデータ
+/// </summary>
+[System.Serializable]
+public class RankingData
+{
+	public string rankingName;
+	public int arrivalStage;
+	public int slimeLevel;
+	public SlimeType slimeType;
+
+	public RankingData()
+	{
+		rankingName = "名無しのごんべえ";
+		arrivalStage = 1;
+		slimeLevel = 10;
+		slimeType = SlimeType.Normal;
 	}
 }

@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: SpriteCustom
   m_Shader: {fileID: 4800000, guid: fdc46d35fb19b46cf97e9d36d847c0e6, type: 3}
@@ -30,7 +30,7 @@ Material:
     - PixelSnap: 0
     - _Alpha: 0
     - _EnableExternalAlpha: 0
-    - _Grid: 32
+    - _Grid: 256
     - _OutLineSpread: 0.002
     - _OutLineSpreadX: 0
     - _OutLineSpreadY: 0

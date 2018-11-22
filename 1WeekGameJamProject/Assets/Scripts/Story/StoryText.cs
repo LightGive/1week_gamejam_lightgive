@@ -11,6 +11,8 @@ public class StoryText : MonoBehaviour
 	private float m_normalInterval = 0.05f;
 	[SerializeField]
 	private float m_fastInterval = 0.01f;
+	[SerializeField, Range(0, 1)]
+	private float m_textVolume;
 
 	private int m_currentStringNo = 0;
 	private bool m_isActive = false;
@@ -50,7 +52,7 @@ public class StoryText : MonoBehaviour
 		m_text.text = str + m_tmpText[m_currentStringNo].ToString();
 		m_timeCnt = 0.0f;
 		m_currentStringNo++;
-		//SimpleSoundManager.Instance.PlaySE(.SE_TEXTDISPLAY);
+		SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.TextDisplay, m_textVolume);
 
 		if (m_tmpText.Length <= m_currentStringNo)
 		{

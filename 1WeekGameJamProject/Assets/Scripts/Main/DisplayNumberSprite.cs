@@ -12,14 +12,6 @@ public class DisplayNumberSprite : MonoBehaviour
 	[SerializeField]
 	private Vector3 m_offset;
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			SetNumber(Random.Range(0, 99));
-		}
-	}
-
 	public void SetDelete()
 	{
 		for (int i = 0; i < m_spriteRenderers.Length; i++)

@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Story2 : StoryBase
 {
-
-
-	void Start()
+	public void OnAppearDevil()
 	{
-
+		SimpleSoundManager.Instance.PlayBGM(SoundNameBGM.Story2);
 	}
 
-	void Update()
+	public void OnStopBGM()
 	{
-
+		SimpleSoundManager.Instance.StopBGM();
 	}
 }

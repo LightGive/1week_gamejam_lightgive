@@ -3,10 +3,16 @@
 	public const string SaveKeyGUID = "SaveKeyGUID";
 }
 
-public enum Operator
+public enum SlimeType
 {
-	Add,    //足し算
-	Sub,    //引き算
-	Multi,  //掛け算
-	Div     //割り算
+	Normal,
+	FatMan,
+	Fly
+}
+
+public enum SettingVelocityGuide
+{
+	None,
+	Arrow,
+	Parabola
 }

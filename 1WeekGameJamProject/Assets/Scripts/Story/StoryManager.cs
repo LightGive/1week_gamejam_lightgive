@@ -31,8 +31,7 @@ public class StoryManager : SingletonMonoBehaviour<StoryManager>
 		//AudioManager.Instance.PlayBGM(AudioName.BGM_STORY);
 		m_textNo = 0;
 		m_stories[m_storyNo].gameObject.SetActive(true);
-		m_storyText.SetText(m_stories[m_storyNo].displayTextInfos[0].displayText);
-		m_textName.text = m_stories[m_storyNo].displayTextInfos[0].nameText;
+		OnCheckNextText();
 	}
 
 	private void Update()
@@ -71,7 +70,8 @@ public class StoryManager : SingletonMonoBehaviour<StoryManager>
 				m_timeCnt = 0.0f;
 				m_isChangeScene = false;
 				m_changeMat.SetFloat("_Cutoff", 0.0f);
-				m_storyText.SetText(m_stories[m_storyNo].displayTextInfos[m_textNo].displayText);
+				//m_storyText.SetText(m_stories[m_storyNo].displayTextInfos[m_textNo].displayText);
+				OnCheckNextText();
 			}
 		}
 	}
@@ -85,26 +85,29 @@ public class StoryManager : SingletonMonoBehaviour<StoryManager>
 		if (TransitionManager.Instance.isSceneTransitionProgress)
 			return;
 
-		m_textNo++;
+
 		if (m_textNo >= m_stories[m_storyNo].displayTextInfos.Length)
 		{
 			NextStory();
 			return;
 		}
+
+		if (m_stories[m_storyNo].displayTextInfos[m_textNo].eventAct != null)
+		{
+			m_stories[m_storyNo].displayTextInfos[m_textNo].eventAct.Invoke();
+		}
+
 		m_textName.text = m_stories[m_storyNo].displayTextInfos[m_textNo].nameText;
 		m_storyText.SetText(m_stories[m_storyNo].displayTextInfos[m_textNo].displayText);
 		m_storyText.isFast = false;
+		m_textNo++;
 	}
 
 	void NextStory()
 	{
 		m_textNo = 0;
-
 		if ((m_storyNo + 1) >= m_stories.Length)
 		{
-			//SaveManager.Instance.saveData.userData.storyViewSec = m_storyViewTimeCnt;
-			//SaveManager.Instance.saveData.isShowStory = true;
-			//SaveManager.Instance.Save();
 			TransitionManager.Instance.LoadScene(SceneName.Title);
 			return;
 		}

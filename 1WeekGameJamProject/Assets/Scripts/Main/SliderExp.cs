@@ -29,7 +29,6 @@ public class SliderExp : MonoBehaviour
 	{
 		m_displayLevel = SceneMain.Instance.slime.playerStatus.level;
 		m_slider.value = Mathf.Clamp01((float)SceneMain.Instance.slime.playerStatus.exp / SceneMain.Instance.slime.playerStatus.maxExp);
-		m_textExp.text = SceneMain.Instance.slime.playerStatus.exp.ToString("0") + " / " + SceneMain.Instance.slime.playerStatus.maxExp.ToString("0");
 	}
 
 	private void Update()
@@ -46,8 +45,6 @@ public class SliderExp : MonoBehaviour
 
 		if (m_timeCount > m_addTime)
 		{
-			Debug.Log("from" + m_addInfo.fromExp + "   to" + m_addInfo.toExp + "   max" + m_addInfo.maxExp);
-
 			if (m_addInfo.maxExp == m_addInfo.toExp)
 			{
 				m_displayLevel++;

@@ -10,6 +10,16 @@ public class SlimeEye : MonoBehaviour
 	private Vector2 m_eyeRange;
 	[SerializeField]
 	private float m_minDistance;
+	[SerializeField]
+	private Transform m_lookTarget;
+	[SerializeField]
+	private Transform m_eyeCenter;
+
+	public Transform lookTarget
+	{
+		get { return m_lookTarget; }
+		set { m_lookTarget = value; }
+	}
 
 	void Start()
 	{
@@ -28,11 +38,11 @@ public class SlimeEye : MonoBehaviour
 
 	void LookMouse()
 	{
-		var mousePos = (Vector2)SceneMain.Instance.mainCamera.pixelCamera.ScreenToWorldPosition(Input.mousePosition);
-		var eyeCenter = (Vector2)transform.position;
-		var dis = Vector2.Distance(mousePos, eyeCenter);
+		var lookPos = (Vector2)m_lookTarget.position;
+		var eyeCenter = (Vector2)m_eyeCenter.position;
+		var dis = Vector2.Distance(lookPos, eyeCenter);
 
-		var vec = (mousePos - eyeCenter).normalized;
+		var vec = (lookPos - eyeCenter).normalized;
 		var pos = (dis < m_minDistance) ? Vector2.zero : vec * m_eyeRange;
 		m_eye.transform.localPosition = new Vector3(pos.x, pos.y, -1.0f);
 	}
