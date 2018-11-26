@@ -16,6 +16,8 @@ public class StoryManager : SingletonMonoBehaviour<StoryManager>
 	private StoryText m_storyText;
 	[SerializeField]
 	private TextMeshProUGUI m_textName;
+	[SerializeField]
+	private string m_nextSceneName;
 
 	private bool m_isClose = false;
 	private bool m_isChangeScene;
@@ -108,7 +110,7 @@ public class StoryManager : SingletonMonoBehaviour<StoryManager>
 		m_textNo = 0;
 		if ((m_storyNo + 1) >= m_stories.Length)
 		{
-			TransitionManager.Instance.LoadScene(SceneName.Title);
+			TransitionManager.Instance.LoadScene(m_nextSceneName);
 			return;
 		}
 
@@ -124,6 +126,6 @@ public class StoryManager : SingletonMonoBehaviour<StoryManager>
 
 	public void OnButtonDownSkip()
 	{
-		TransitionManager.Instance.LoadScene(SceneName.Title);
+		TransitionManager.Instance.LoadScene(m_nextSceneName);
 	}
 }

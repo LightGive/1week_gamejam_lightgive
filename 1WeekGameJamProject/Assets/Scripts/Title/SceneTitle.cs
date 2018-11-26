@@ -6,10 +6,10 @@ using TMPro;
 public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 {
 	[SerializeField]
-	private GameObject m_buttonContinue;
+	private GameObject[] m_screens;
 
 	[SerializeField]
-	private GameObject[] m_screens;
+	private GameObject[] m_slimes;
 
 	private bool m_isChangeScreen;
 	private ScreenType m_preScreenType = ScreenType.Start;
@@ -19,13 +19,19 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 	{
 		base.Awake();
 		m_isChangeScreen = false;
-		ChangeScreen(ScreenType.Start);
-		m_buttonContinue.SetActive(SaveManager.Instance.saveData.isChangeData);
+		//ChangeScreen(ScreenType.Start);
+
+		//m_buttonContinue.SetActive(SaveManager.Instance.saveData.isChangeData);
 	}
 
 	private void Start()
 	{
 		SimpleSoundManager.Instance.PlayBGM(SoundNameBGM.Title);
+
+		for (int i = 0; i < SaveManager.Instance.saveData.userData.isRelease.Length; i++)
+		{
+			m_slimes[i].SetActive(SaveManager.Instance.saveData.userData.isRelease[i]);
+		}
 	}
 
 	/// <summary>
@@ -36,21 +42,7 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 		ChangeScreen(m_preScreenType);
 	}
 
-	/// <summary>
-	/// はじめるのボタンを押した
-	/// </summary>
-	public void OnButtonDownFirstStart()
-	{
-		ChangeScreen(ScreenType.InputName);
-	}
 
-	/// <summary>
-	/// つづきからのボタンを押した
-	/// </summary>
-	public void OnButtonDownContinue()
-	{
-		TransitionManager.Instance.LoadScene(SceneName.Main);
-	}
 
 	/// <summary>
 	/// タイトルシーン内でシーン変更
@@ -79,5 +71,7 @@ public class SceneTitle : LightGive.SingletonMonoBehaviour<SceneTitle>
 	{
 		Start = 0,
 		InputName = 1,
+		IsPlayTutorial = 2,
+		Setting = 3,
 	}
 }

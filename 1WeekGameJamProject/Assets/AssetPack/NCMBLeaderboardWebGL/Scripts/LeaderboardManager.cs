@@ -1,16 +1,21 @@
 ﻿using NCMBRest;
+using System;
 using System.Collections;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(NCMBRestController))]
 public class LeaderboardManager : LightGive.SingletonMonoBehaviour<LeaderboardManager>
 {
-	private const string SaveKeyObjectId = "ObjectId";
-	private const string DataStoreClassName = "Leaderboard";
-
 	private NCMBRestController ncmbRestController;
+
+	private static readonly string PLAYERNAME = "PlayerName";
+	private static readonly string OBJECT_ID = "ObjectId";
+	private static readonly string HIGH_SCORE = "HighScore";
+	private static readonly string DATASTORE_CLASSNAME = "Leaderboard"; //スコアを保存するデータストア名//
+
+	public string saveObjectId { get { return PlayerPrefs.GetString(OBJECT_ID, ""); } }
 
 	protected override void Awake()
 	{
@@ -19,124 +24,178 @@ public class LeaderboardManager : LightGive.SingletonMonoBehaviour<LeaderboardMa
 		ncmbRestController = GetComponent<NCMBRestController>();
 	}
 
-	/// <summary>
-	/// セーブデータを送信する。
-	/// 新規で送信するかレコード編集か判定する
-	/// </summary>
-	/// <returns>The save data.</returns>
-	/// <param name="_jsonData">Json data.</param>
-	public IEnumerator SendSaveData(string _jsonData, UnityAction _callback = null)
+	public IEnumerator SendScore(string _playerName, int _score, string _jsonData, UnityAction _act = null)
 	{
-		//スコアを既に送っているかの判定
-		if (PlayerPrefs.HasKey(SaveKeyObjectId))
+		//過去のスコアがあるか//
+		if (PlayerPrefs.HasKey(OBJECT_ID))
 		{
-			//既に送っているのでレコード編集
-			yield return PutSaveData(_jsonData, PlayerPrefs.GetString(SaveKeyObjectId));
-			if (_callback != null)
-				_callback.Invoke();
+			//そのスコアはハイスコアか//
+			if (_score > PlayerPrefs.GetInt(HIGH_SCORE))
+			{
+				//レコードの更新//
+				yield return PutScore(_playerName, _score, _jsonData, PlayerPrefs.GetString(OBJECT_ID));
+				//ローカルのハイスコアを更新//
+				PlayerPrefs.SetInt(HIGH_SCORE, _score);
+				PlayerPrefs.SetString(PLAYERNAME, _playerName);
+
+				if (_act != null)
+					_act.Invoke();
+
+				yield break;
+			}
+			else
+			{
+				Debug.Log("ハイスコアが更新されていないため、スコアを送信しませんでした。");
+				if (_act != null)
+					_act.Invoke();
+
+				yield break;
+			}
 		}
-		else
+
+		//チェックせずに送る
+		yield return SendScoreUncheck(_playerName, _score, _jsonData);
+
+		if (_act != null)
 		{
-			//まだ送ってないので新規レコード登録
-			yield return SendSaveDataUncheck(_jsonData);
-			if (_callback != null)
-				_callback.Invoke();
+			_act.Invoke();
 		}
 	}
 
-
-	/// <summary>
-	/// レコードの有る無しに関わらずデータを新規で登録する
-	/// </summary>
-	/// <returns>The score uncheck.</returns>
-	/// <param name="_jsonData">Json data.</param>
-	public IEnumerator SendSaveDataUncheck(string _jsonData)
+	public IEnumerator SendScoreUncheck(string _playerName, int _score, string _jsonData)
 	{
-		Debug.Log(_jsonData);
-
 		//レコードの新規作成//
-		IEnumerator postScoreCoroutine = PostSaveData(_jsonData);
-		yield return postScoreCoroutine;
-		var objectId = (string)postScoreCoroutine.Current;
+		IEnumerator postScoreCoroutine = PostScore(_playerName, _score, _jsonData);
 
-		//ObjectIdを保存
-		PlayerPrefs.SetString(SaveKeyObjectId, objectId);
+		yield return postScoreCoroutine;
+
+		string objectId = (string)postScoreCoroutine.Current;
+
+		PlayerPrefs.SetString(OBJECT_ID, objectId);//ObjectIdを保存//
+		PlayerPrefs.SetInt(HIGH_SCORE, _score);//ローカルのハイスコアを保存//
+		PlayerPrefs.SetString(PLAYERNAME, _playerName);//プレイヤーネームを保存 名前を変えたときのチェック用//
+		SaveManager.Instance.saveData.rankingData.objectId = objectId;
 	}
 
-	/// <summary>
-	/// 既送信してあるセーブデータのレコードを取得する
-	/// </summary>
-	/// <returns>The save data.</returns>
-	/// <param name="_jsonData">Json data.</param>
-	/// <param name="_objectId">Object identifier.</param>
-	private IEnumerator PutSaveData(string _jsonData, string _objectId)
+	private IEnumerator PostScore(string _playerName, int _score, string _jsonData)
 	{
-		NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet(new JsonData(_jsonData));
+		Debug.Log(_playerName + "のスコア" + _score + "を新規投稿します。");
+
+		ScoreData scoreData = new ScoreData(_playerName, _score, _jsonData);
+		NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet(scoreData);
+
+		IEnumerator coroutine = ncmbRestController.Call(NCMBRestController.RequestType.POST, "classes/" + DATASTORE_CLASSNAME, paramSet);
+
+		yield return StartCoroutine(coroutine);
+
+		JsonUtility.FromJsonOverwrite((string)coroutine.Current, paramSet);
+
+		yield return paramSet.objectId;
+	}
+
+	private IEnumerator PutScore(string _playerName, int _score, string _jsonData, string objectId)
+	{
+		string formerPlayerName = PlayerPrefs.GetString(PLAYERNAME);
+
+		if (formerPlayerName != _playerName)
+		{
+			Debug.Log("プレイヤー名が " + formerPlayerName + " から " + _playerName + " に変更されました");
+			PlayerPrefs.SetString(PLAYERNAME, _playerName);
+		}
+
+		Debug.Log(_playerName + "のスコア" + _score + "を更新します。レコードのID：" + objectId);
+
+		ScoreData scoreData = new ScoreData(_playerName, _score, _jsonData);
+		NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet(scoreData);
 
 		IEnumerator coroutine = ncmbRestController.Call(
-			NCMBRestController.RequestType.PUT, "classes/" + DataStoreClassName + "/" + _objectId, paramSet,
+			NCMBRestController.RequestType.PUT, "classes/" + DATASTORE_CLASSNAME + "/" + objectId, paramSet,
 			(erroCode) =>
 			{
 				if (erroCode == 404)
 				{
-					Debug.Log("レコードID：" + _objectId + "が見つからなかったため、新規レコードを作成します");
-					StartCoroutine(SendSaveDataUncheck(_jsonData));
+					Debug.Log("レコードID：" + objectId + "が見つからなかったため、新規レコードを作成します");
+					StartCoroutine(SendScoreUncheck(_playerName, _score, _jsonData));
 				}
-			});
+			}
+
+			);
 
 		yield return StartCoroutine(coroutine);
+
 		JsonUtility.FromJsonOverwrite((string)coroutine.Current, paramSet);
+
 		yield return paramSet.objectId;
 	}
 
-	/// <summary>
-	/// セーブデータのレコードを新規登録する
-	/// </summary>
-	/// <returns>The save data.</returns>
-	/// <param name="_jsonData">Json data.</param>
-	private IEnumerator PostSaveData(string _jsonData)
+	public IEnumerator GetScoreList(int num, UnityAction<ScoreDatas> callback)
 	{
-		NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet(new JsonData(_jsonData));
-		IEnumerator coroutine = ncmbRestController.Call(NCMBRestController.RequestType.POST, "classes/" + DataStoreClassName, paramSet);
-		yield return StartCoroutine(coroutine);
-		JsonUtility.FromJsonOverwrite((string)coroutine.Current, paramSet);
-		yield return paramSet.objectId;
-	}
-
-
-	public IEnumerator GetJsonData(UnityAction<JsonDataList> callback)
-	{
+		Debug.Log("Get Data");
 		NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet();
-		paramSet.Limit = int.MaxValue;
+		paramSet.Limit = num;
+		paramSet.SortColumn = "-score";
 
-		IEnumerator coroutine = ncmbRestController.Call(NCMBRestController.RequestType.GET, "classes/" + DataStoreClassName, paramSet);
+		IEnumerator coroutine = ncmbRestController.Call(NCMBRestController.RequestType.GET, "classes/" + DATASTORE_CLASSNAME, paramSet);
+
 		yield return StartCoroutine(coroutine);
+
 		string jsonStr = (string)coroutine.Current;
-		JsonDataList saveDates = JsonUtility.FromJson<JsonDataList>(jsonStr);
-		if (saveDates.results.Count == 0)
+
+		//取得したjsonをScoreDatasとして展開//
+		ScoreDatas scores = JsonUtility.FromJson<ScoreDatas>(jsonStr);
+
+		if (scores.results.Count == 0)
 		{
-			Debug.Log("データがありません");
+			Debug.Log("no data");
 		}
-		else
-		{
-			Debug.Log(saveDates.results.Count.ToString() + "件データを取得しました");
-		}
-		callback(saveDates);
+
+		callback(scores);
 	}
 
-	[System.Serializable]
-	public class JsonDataList
+	public IEnumerator GetScoreListByStr(int num, UnityAction<string> callback)
 	{
-		public List<JsonData> results;
+		yield return GetScoreList(num, (scores) =>
+		{
+			string str = string.Empty;
+
+			int i = 1;
+
+			foreach (ScoreData s in scores.results)
+			{
+				str += i + ": " + s.playerName + ": " + s.score.ToString() + "\n";
+				i++;
+			}
+
+			callback(str);
+		});
 	}
 
-	[System.Serializable]
-	public class JsonData
+	public void ClearLocalData()
 	{
-		public string json;
-		public JsonData(string _json)
+		PlayerPrefs.DeleteKey(PLAYERNAME);
+		PlayerPrefs.DeleteKey(OBJECT_ID);
+		PlayerPrefs.DeleteKey(HIGH_SCORE);
+		Debug.Log("ローカルのハイスコアとObjectIdが削除されました");
+	}
+
+	[Serializable]
+	public class ScoreDatas
+	{
+		public List<ScoreData> results;
+	}
+
+	[Serializable]
+	public class ScoreData
+	{
+		public ScoreData(string playerName, int score, string _jsonData)
 		{
-			json = _json;
+			this.playerName = playerName;
+			this.score = score;
+			this.jsonData = _jsonData;
 		}
+
+		public string playerName;
+		public string jsonData;
+		public int score;
 	}
 }

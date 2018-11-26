@@ -20,7 +20,9 @@ public class ScreenInputName : MonoBehaviour
 		SaveManager.Instance.saveData.userData.playerName = realName;
 		SaveManager.Instance.saveData.isChangeData = true;
 		SaveManager.Instance.Save();
-		TransitionManager.Instance.LoadScene(SceneName.Main);
+		var jsonData = SaveManager.Instance.SaveDataToJson(SaveManager.Instance.saveData.rankingData);
+		StartCoroutine(LeaderboardManager.Instance.SendScoreUncheck(SaveManager.Instance.saveData.userData.playerName, 0, jsonData));
+		SceneTitle.Instance.ChangeScreen(SceneTitle.ScreenType.IsPlayTutorial);
 	}
 
 	public void OnInputTextChange()

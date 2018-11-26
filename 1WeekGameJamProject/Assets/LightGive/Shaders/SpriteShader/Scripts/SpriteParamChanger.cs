@@ -13,9 +13,9 @@ namespace LightGive
 
 		private SpriteRenderer spRenderer;
 
-		void Start()
+		private void Awake()
 		{
-			spRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+			spRenderer = gameObject.GetComponent<SpriteRenderer>();
 		}
 
 		public float WhiteColor

@@ -39,12 +39,25 @@ public class SaveData : ISerializationCallbackReceiver
 [System.Serializable]
 public class UserData
 {
+	public SlimeType slimeType;
 	public string playerName;
+	public int highScore;
 	public int totalKill;
 	public int clearCount;
+	public bool[] isRelease;
 
 	public UserData()
 	{
+		isRelease = new bool[(int)SlimeType.Max]
+		{
+			true,
+			false,
+			false,
+			false,
+			false
+		};
+
+		highScore = 0;
 		totalKill = 0;
 		clearCount = 0;
 		playerName = "名無しさん";
@@ -71,18 +84,22 @@ public class SettingData
 [System.Serializable]
 public class RankingData
 {
+	public string objectId;
 	public string rankingName;
 	public int arrivalStage;
-	public int slimeLevel;
-	public int score = 0;
+	public int score;
+	public int slimeNum;
 	public SlimeType slimeType;
+	public PlayerStatus playerStatus;
 
 	public RankingData()
 	{
+		objectId = "";
+		playerStatus = new PlayerStatus(false);
 		rankingName = "名無しのごんべえ";
-		arrivalStage = 1;
-		slimeLevel = 10;
 		slimeType = SlimeType.Normal;
+		arrivalStage = 1;
+		slimeNum = 0;
 		score = 0;
 	}
 }

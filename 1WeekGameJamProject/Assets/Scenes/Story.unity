@@ -642,7 +642,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: 5125eef19846b4c368105e91b6d05aa6, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 5125eef19846b4c368105e91b6d05aa6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1873,6 +1873,7 @@ MonoBehaviour:
   m_changeMat: {fileID: 2100000, guid: 7ef6064f34235487ca36bacae711dd9b, type: 2}
   m_storyText: {fileID: 2014722237}
   m_textName: {fileID: 1748819468}
+  m_nextSceneName: Title
 --- !u!1 &1194742649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2109,6 +2110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_textButton: {fileID: 1053212281}
   m_mainButton: {fileID: 1400742636}
+  m_highlightTextOffsetPos: {x: 0, y: 0}
   m_pressTextOffsetPos: {x: -2, y: -2}
 --- !u!114 &1400742636
 MonoBehaviour:
@@ -3448,7 +3450,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: 5125eef19846b4c368105e91b6d05aa6, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 5125eef19846b4c368105e91b6d05aa6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

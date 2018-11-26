@@ -117,6 +117,7 @@ public class SimpleSoundManager : LightGive.SingletonMonoBehaviour<SimpleSoundMa
 		base.isDontDestroy = true;
 		base.Awake();
 
+		LoadVolume();
 		SceneManager.sceneUnloaded += OnSceneUnloaded;
 
 		for (int i = 0; i < m_sePlayerNum; i++)

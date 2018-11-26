@@ -6,6 +6,7 @@ TextureImporter:
     21300002: SlimeEye_1
     21300004: SlimeEye_2
     21300006: SlimeEye_3
+    21300008: SlimeEye_4
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -135,7 +136,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7621d9df5c0dd49959c2988827006a16
+      spriteID: 2a16dfa0a12424bbcba7aa04236cfa1d
       vertices: []
       indices: 
       edges: []
@@ -155,13 +156,53 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 082b6050df9fc4c66aac223ed6374117
+      spriteID: b01db84af992e4621a7411b3039bec3c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
       name: SlimeEye_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 432f85500d1ab4709b177b011b01789c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlimeEye_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed88c949c04314690ae4fd318857069e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlimeEye_4
       rect:
         serializedVersion: 2
         x: 0
@@ -175,27 +216,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 95336792931a1464ca3cca3892e28966
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlimeEye_3
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2dfa6aa653e0f4c78a6ce23a92ba5970
+      spriteID: 5c762caf809f742a2a0ff2e50c205105
       vertices: []
       indices: 
       edges: []

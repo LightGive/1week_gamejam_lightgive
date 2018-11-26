@@ -2,6 +2,11 @@ public class SceneName
 {
 
 	/// <summary>
+	/// return "Story"
+ 	/// </summary>
+	public const string @Story = "Story";
+
+	/// <summary>
 	/// return "Title"
  	/// </summary>
 	public const string @Title = "Title";
@@ -12,8 +17,21 @@ public class SceneName
 	public const string @Main = "Main";
 
 	/// <summary>
-	/// <para>0. "Title"</para>
-	/// <para>1. "Main"</para>
+	/// return "Endroll"
+ 	/// </summary>
+	public const string @Endroll = "Endroll";
+
+	/// <summary>
+	/// return "Epilogue"
+ 	/// </summary>
+	public const string @Epilogue = "Epilogue";
+
+	/// <summary>
+	/// <para>0. "Story"</para>
+	/// <para>1. "Title"</para>
+	/// <para>2. "Main"</para>
+	/// <para>3. "Endroll"</para>
+	/// <para>4. "Epilogue"</para>
 	/// </summary>
-	public static readonly string[] names = new string[]{"Title","Main"};
+	public static readonly string[] names = new string[]{"Story","Title","Main","Endroll","Epilogue"};
 }

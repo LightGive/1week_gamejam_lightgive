@@ -21,6 +21,8 @@ public class Slime : MonoBehaviour
 	[SerializeField]
 	private float m_velocityIntervalMin = 0.2f;
 	[SerializeField]
+	private float m_maxSpeed;
+	[SerializeField]
 	private PlayerStatus m_status;
 	[SerializeField]
 	private GameObject[] m_parabolaDots;
@@ -29,6 +31,7 @@ public class Slime : MonoBehaviour
 	private Vector2 m_beginTouchPos;
 	private float m_lastSoundPlayTime = 0.0f;
 	private float m_lastVelocityTime = 0.0f;
+
 	private bool m_isTouch = false;
 
 	/// <summary>
@@ -42,7 +45,11 @@ public class Slime : MonoBehaviour
 	{
 		get { return m_status.level; }
 	}
-	public PlayerStatus playerStatus { get { return m_status; } }
+	public PlayerStatus playerStatus
+	{
+		get { return m_status; }
+		set { m_status = value; }
+	}
 	public Vector2 positionVec2 { get { return new Vector2(transform.position.x, transform.position.y); } }
 
 	void Start()
@@ -52,9 +59,6 @@ public class Slime : MonoBehaviour
 
 	protected virtual void Update()
 	{
-		if (SceneMain.Instance.isGameOver || !SceneMain.Instance.isGameStart)
-			return;
-
 		CheckTouch();
 		CheckEyeTarget();
 	}
@@ -81,11 +85,17 @@ public class Slime : MonoBehaviour
 
 	void CheckTouch()
 	{
+		if (SceneMain.Instance.isFixedSlime)
+			return;
+
 		var pos = SceneMain.Instance.mainCamera.pixelCamera.ScreenToWorldPosition(Input.mousePosition);
 		var nowTouchPos = new Vector2(pos.x, pos.y);
 
 		if (!m_isTouch && Input.GetMouseButtonDown(0))
 		{
+			if ((Time.time - m_lastVelocityTime) < 0.5f)
+				return;
+
 			//タッチ開始
 			m_isTouch = true;
 			m_beginTouchPos = nowTouchPos;
@@ -150,7 +160,8 @@ public class Slime : MonoBehaviour
 					if (m_mainArrow.isActive)
 					{
 						var vec = (m_beginTouchPos - nowTouchPos).normalized;
-						m_jellySprite.ChangeVelocity(CalcVelocity(vec));
+						AddForce(CalcVelocity(vec));
+						m_lastVelocityTime = Time.time;
 						m_mainArrow.SetActive(false);
 					}
 					break;
@@ -180,7 +191,8 @@ public class Slime : MonoBehaviour
 					return;
 
 				var enemy = _col.Collision2D.gameObject.GetComponent<Enemy>();
-				enemy.Hit(m_status.atk);
+				var p = _col.Collision2D.contacts[0].point;
+				enemy.Hit(m_status.atk, p);
 				break;
 
 			case TagName.StageObject:
@@ -207,10 +219,8 @@ public class Slime : MonoBehaviour
 
 	Vector3 CalcVelocity(Vector2 _normalizedVec)
 	{
-		return _normalizedVec * Mathf.Lerp(m_rangeForcePower.MinValue, m_rangeForcePower.MaxValue, m_mainArrow.lerp) * m_status.moveSpeed;
+		return _normalizedVec * Mathf.Lerp(m_rangeForcePower.MinValue, Mathf.Lerp(m_rangeForcePower.MaxValue, m_maxSpeed, (float)m_status.spd / PlayerStatus.ConstParamator), m_mainArrow.lerp);
 	}
-
-
 
 	/// <summary>
 	/// 経験値を付与する
@@ -221,6 +231,11 @@ public class Slime : MonoBehaviour
 		SceneMain.Instance.uIController.sliderExp.AddExp(_addExp);
 	}
 
+	public void AddForce(Vector2 _vec)
+	{
+		m_jellySprite.AddForce(_vec);
+	}
+
 	/// <summary>
 	/// レベルアップ時
 	/// </summary>
@@ -228,16 +243,5 @@ public class Slime : MonoBehaviour
 	{
 		m_status.level++;
 		m_status.exp = 0;
-	}
-
-
-	[System.Serializable]
-	public class PlayerStatus
-	{
-		public int level;
-		public int atk;
-		public int exp;
-		public int maxExp;
-		public float moveSpeed;
 	}
 }

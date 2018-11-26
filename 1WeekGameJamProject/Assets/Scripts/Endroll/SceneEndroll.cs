@@ -23,6 +23,7 @@ public class SceneEndroll : MonoBehaviour
 	{
 		SaveManager.Instance.saveData.userData.clearCount++;
 		SaveManager.Instance.Save();
+		m_isScroll = true;
 
 		SimpleSoundManager.Instance.PlayBGM(SoundNameBGM.Endroll);
 		m_scrollContent.anchoredPosition = new Vector2(0.0f, m_rangeScroll.MinValue);
@@ -33,13 +34,19 @@ public class SceneEndroll : MonoBehaviour
 		if (!m_isScroll)
 			return;
 
+		var speed = (Input.GetMouseButton(0)) ? m_fastScrollSpeed : m_normalScrollSpeed;
 		var pos = m_scrollContent.anchoredPosition.y;
-		pos = Mathf.Clamp(pos + scrollSpeed * Time.deltaTime, m_rangeScroll.MinValue, m_rangeScroll.MaxValue);
+		pos = Mathf.Clamp(pos + speed * Time.deltaTime, m_rangeScroll.MinValue, m_rangeScroll.MaxValue);
 		m_scrollContent.anchoredPosition = new Vector2(0.0f, pos);
 
 		if (pos <= m_rangeScroll.MinValue)
 		{
 			Debug.Log("終了");
 		}
+	}
+
+	public void OnButtonDownBackTitle()
+	{
+		TransitionManager.Instance.LoadScene(SceneName.Title);
 	}
 }

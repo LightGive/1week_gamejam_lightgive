@@ -44,7 +44,7 @@ public class TextDisplay : MonoBehaviour
 		m_text.text = str + m_tmpText[m_currentStringNo].ToString();
 		m_timeCnt = 0.0f;
 		m_currentStringNo++;
-		//SimpleSoundManager.Instance.PlaySE();
+		SimpleSoundManager.Instance.PlaySE_2D(SoundNameSE.TextDisplay);
 
 		if (m_tmpText.Length <= m_currentStringNo)
 		{

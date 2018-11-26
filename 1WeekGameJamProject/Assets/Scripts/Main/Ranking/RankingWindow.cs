@@ -8,6 +8,8 @@ public class RankingWindow : MonoBehaviour
 	private RankingContent m_rankingContentPref;
 	[SerializeField]
 	private Transform m_rankingView;
+	[SerializeField]
+	private GameObject m_loadingScreen;
 
 	private bool m_isSendComplete = false;
 	private bool m_isLoadComplete = false;
@@ -16,39 +18,45 @@ public class RankingWindow : MonoBehaviour
 	public void GetRankingStart()
 	{
 		var jsonData = SaveManager.Instance.SaveDataToJson(SaveManager.Instance.saveData.rankingData);
-
-		//ランキングを送信する
-		StartCoroutine(LeaderboardManager.Instance.SendSaveData(jsonData, () =>
+		StartCoroutine(LeaderboardManager.Instance.SendScore
+					   (SaveManager.Instance.saveData.rankingData.rankingName,
+						SaveManager.Instance.saveData.rankingData.score,
+						jsonData, () =>
 		{
-			m_isSendComplete = true;
-
-			//送信に成功した時、ランキングの受信をする
-			StartCoroutine(LeaderboardManager.Instance.GetJsonData((result) =>
-			{
-				for (int i = 0; i < result.results.Count; i++)
-				{
-					var c = result.results[i].json;
-					var d = SaveManager.Instance.JsonToSaveData(c);
-					m_rankingDataList.Add(d);
-				}
-
-				m_isLoadComplete = result.results.Count > 0;
-
-				if (m_isLoadComplete)
-					ShowRanking();
-
-			}));
+			ShowRanking();
 		}));
-
 	}
 
 	void ShowRanking()
 	{
-		m_rankingDataList.Sort((a, b) => a.score - b.score);
-		for (int i = 0; i < m_rankingDataList.Count; i++)
-		{
-			var c = Instantiate(m_rankingContentPref, m_rankingView);
-			c.SetRankingData(i + 1, m_rankingDataList[i]);
-		}
+		m_loadingScreen.SetActive(true);
+		StartCoroutine(LeaderboardManager.Instance.GetScoreList(30, (score) =>
+	   {
+		   for (int i = 0; i < score.results.Count; i++)
+		   {
+			   if (score.results[i].score <= 0)
+				   continue;
+
+			   var rd = SaveManager.Instance.JsonToSaveData(score.results[i].jsonData);
+			   var rc = Instantiate(m_rankingContentPref, m_rankingView);
+			   rc.SetRankingData(i + 1, rd, rd.objectId == LeaderboardManager.Instance.saveObjectId);
+		   }
+		   m_loadingScreen.SetActive(false);
+	   }));
+
+
+
+		//m_rankingDataList.Sort((a, b) => b.score - a.score);
+
+		//int myIdx = -1;
+		//for (int i = 0; i < m_rankingDataList.Count; i++)
+		//{
+		//	var c = m_rankingDataList[i];
+		//	var rc = Instantiate(m_rankingContentPref, m_rankingView);
+		//	rc.SetRankingData(i + 1, m_rankingDataList[i]);
+
+		//	//if (c.objectId == LeaderboardManager.Instance.objectID)
+		//	//myIdx = i;
+		//}
 	}
 }

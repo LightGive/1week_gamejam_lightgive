@@ -5,9 +5,12 @@
 
 public enum SlimeType
 {
-	Normal,
-	FatMan,
-	Fly
+	Normal = 0,
+	Tohu = 1,
+	FatMan = 2,
+	Fly = 3,
+	UFO = 4,
+	Max = 5,
 }
 
 public enum SettingVelocityGuide
@@ -16,3 +19,4 @@ public enum SettingVelocityGuide
 	Arrow,
 	Parabola
 }
+

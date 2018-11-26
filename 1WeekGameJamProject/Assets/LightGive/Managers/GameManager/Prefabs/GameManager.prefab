@@ -51,3 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c76ef5ce00f0d4cf9a798ffa31ddea47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDontDestroy: 0
+  stageNo: 2
+  slimeLevel: 0
+  slimeNum: 0
+  slimeStatus:
+    level: 10
+    atk: 1
+    def: 1
+    spd: 1
+    exp: 0
